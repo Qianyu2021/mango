@@ -35,7 +35,7 @@ public class BlogPostController {
         public BlogPost updateBlogPost (@PathVariable Long id, @RequestBody BlogPost blogPostDetails){
         return blogPostService.getBlogPostById(id).map(blogPost->{
             blogPost.setTitle(blogPostDetails.getTitle());
-            blogPost.setContent(blogPostService.getContent());
+            blogPost.setContent(blogPostDetails.getContent());
             //update other fields as necessary
             return blogPostService.saveOrUpdateBlogPost(blogPost);
             }).orElseThrow(()-> new RuntimeException("BlogPost not found"));
