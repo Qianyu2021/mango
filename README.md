@@ -6,3 +6,4 @@ docker run -d -p 5432:5432 mango-db
 
 // compile the backend
 mvn clean install
+mvn spring-boot:run
