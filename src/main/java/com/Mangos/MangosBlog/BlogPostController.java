@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/blogposts")
+@RequestMapping("/api/v1/blogposts")
 public class BlogPostController {
 
     @Autowired
@@ -30,21 +30,21 @@ public class BlogPostController {
         return blogPostService.saveOrUpdateBlogPost(blogPost);
     }
 
-        // Update an existing blog post
-        @PutMapping("/{id}")
-        public BlogPost updateBlogPost (@PathVariable Long id, @RequestBody BlogPost blogPostDetails){
-        return blogPostService.getBlogPostById(id).map(blogPost->{
-            blogPost.setTitle(blogPostDetails.getTitle());
-            blogPost.setContent(blogPostDetails.getContent());
-            //update other fields as necessary
-            return blogPostService.saveOrUpdateBlogPost(blogPost);
-            }).orElseThrow(()-> new RuntimeException("BlogPost not found"));
-        }
+    // Update an existing blog post
+    @PutMapping("/{id}")
+    public BlogPost updateBlogPost (@PathVariable Long id, @RequestBody BlogPost blogPostDetails){
+    return blogPostService.getBlogPostById(id).map(blogPost->{
+        blogPost.setTitle(blogPostDetails.getTitle());
+        blogPost.setContent(blogPostDetails.getContent());
+        //update other fields as necessary
+        return blogPostService.saveOrUpdateBlogPost(blogPost);
+        }).orElseThrow(()-> new RuntimeException("BlogPost not found"));
+    }
 
-        // Delete a blog post
-        @DeleteMapping("/{id}")
-        public void deleteBlogPost (@PathVariable Long id){
-            blogPostService.deleteBlogPost(id);
-        }
+    // Delete a blog post
+    @DeleteMapping("/{id}")
+    public void deleteBlogPost (@PathVariable Long id){
+        blogPostService.deleteBlogPost(id);
+    }
 }
 
