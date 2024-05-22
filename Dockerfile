@@ -1,13 +1,10 @@
-# Use the official PostgreSQL image as the base image
-FROM postgres:15.5
 
-# Set environment variables for PostgreSQL
-ENV POSTGRES_DB mango
-ENV POSTGRES_USER mango
-ENV POSTGRES_PASSWORD orangesaredelicious
+FROM openjdk:21
+VOLUME /tmp
+EXPOSE 8081
 
-# Expose the PostgreSQL default port (5432)
-EXPOSE 5432
+#copy the JAR file to the working directiory of the image which is by default /
+#the copied JAR file will be renamed to mango.jar
+COPY target/Mangos-Blog-0.0.1-SNAPSHOT.jar mango.jar
+ENTRYPOINT ["java","-jar","/mango.jar"]
 
-# Create a custom entrypoint script to initialize the database and user
-COPY scripts/init_postgres.sh /docker-entrypoint-initdb.d/

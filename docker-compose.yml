@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgresdb:
+    image: postgres
+    container_name: postgresdb
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=mango
+      - POSTGRES_USER=mango
+      - POSTGRES_PASSWORD=orangesaredelicious
+    ports:
+      - "5432:5432"
+
+  mango:
+    container_name: mango_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+    environment:
+        - spring.datasource.url=jdbc:postgresql://postgresdb:5432/mango
+        - spring.datasource.username=mango
+        - spring.datasource.password=orangesaredelicious
+        - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+        - spring.jpa.hibernate.ddl-auto=update
+
+    depends_on:
+      - postgresdb
+
