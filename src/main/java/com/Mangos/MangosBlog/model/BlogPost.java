@@ -22,25 +22,38 @@ public class BlogPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long blogId;
-    LocalDate createdDate;
-    LocalDate updatedDate;
+    LocalDate createdDate = LocalDate.now();
+    LocalDate updatedDate = LocalDate.now();
 
-    @Lob
+
     @NotBlank
     private String blogTitle;
-    //private Content content;
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @Lob
     private String imageUrl;
     private String externalLink;
 
     @OneToMany(mappedBy = "blogId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BlogComments> comments = new ArrayList<>();
 
-    public BlogPost(String blogTitle, String imageUrl, String externalLink) {
+
+    public BlogPost(String blogTitle, String description, String content, String imageUrl, String externalLink) {
         this.blogTitle = blogTitle;
         this.imageUrl = imageUrl;
         this.externalLink = externalLink;
         this.createdDate = LocalDate.now();
         this.updatedDate = LocalDate.now();
+        this.description = description;
+        this.content = content;
+        this.createdDate = LocalDate.now();
+        this.updatedDate = LocalDate.now();
+
     }
     public Long getBlogId() {
         return blogId;
@@ -87,5 +100,20 @@ public class BlogPost {
     public void setExternalLink(String externalLink) {
 
         this.externalLink = externalLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
     }
 }

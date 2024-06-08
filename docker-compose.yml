@@ -25,8 +25,11 @@ services:
         - spring.datasource.username=mango
         - spring.datasource.password=orangesaredelicious
         - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-        - spring.jpa.hibernate.ddl-auto=update
-
+        - spring.jpa.hibernate.ddl-auto=updat
     depends_on:
-      - postgresdb
+             - postgresdb
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 

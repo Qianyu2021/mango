@@ -3,10 +3,8 @@ package com.Mangos.MangosBlog.controller;
 import com.Mangos.MangosBlog.model.BlogPost;
 import com.Mangos.MangosBlog.repository.PostRepository;
 import com.Mangos.MangosBlog.services.BlogPostService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 @Slf4j
 @RequestMapping("/api/blogposts") // every method falls under this
@@ -22,16 +20,15 @@ import java.util.Optional;
 public class BlogPostController {
     //no autowire, because don't want to create instance everytime
     private final PostRepository postRepository;
-    @Autowired
-    private BlogPostService blogPostService;
+    private final BlogPostService blogPostService;
 
     @GetMapping("")
     public List<BlogPost> getAllBlogPosts() {
         return blogPostService.getAllPosts();
     }
 
-    @GetMapping("/id")
-    public BlogPost getBlogPostById(@RequestParam long id) {
+    @GetMapping("/{id}")
+    public BlogPost getBlogPostById(@PathVariable long id) {
         Optional<BlogPost> post = postRepository.findById(id);
         if (post.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
@@ -42,13 +39,11 @@ public class BlogPostController {
     //post
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public void createBlog(@Valid @RequestBody BlogPost blogPost) {
-        System.out.println("rx post");
-        blogPostService.createPost(blogPost);
-        postRepository.save(blogPost);
+    public void createBlog(@RequestBody BlogPost blogPost)  {
+         blogPostService.createPost(blogPost);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    //@ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     public void updateBlogPost(@PathVariable long id, @RequestBody BlogPost blogPost) {
         blogPostService.update(blogPost, id);
@@ -57,7 +52,8 @@ public class BlogPostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteBlogPost(@PathVariable long id) {
-        blogPostService.getById(id);
+
+        blogPostService.deletePost(id);
     }
 }
 
