@@ -11,6 +11,8 @@ services:
       - POSTGRES_PASSWORD=orangesaredelicious
     ports:
       - "5432:5432"
+    volumes:
+        - postgres_data:/var/lib/postgresql/data
 
   mango:
     container_name: mango_app
@@ -18,18 +20,18 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8800:8081"
 
     environment:
         - spring.datasource.url=jdbc:postgresql://postgresdb:5432/mango
         - spring.datasource.username=mango
         - spring.datasource.password=orangesaredelicious
         - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-        - spring.jpa.hibernate.ddl-auto=updat
+        - spring.jpa.hibernate.ddl-auto=update
     depends_on:
-             - postgresdb
+        - postgresdb
 
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
 
 

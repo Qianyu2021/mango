@@ -35,7 +35,6 @@ public class BlogPost {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Lob
     private String imageUrl;
     private String externalLink;
 
@@ -43,10 +42,8 @@ public class BlogPost {
     private List<BlogComments> comments = new ArrayList<>();
 
 
-    public BlogPost(String blogTitle, String description, String content, String imageUrl, String externalLink) {
+    public BlogPost(String blogTitle, String description, String content) {
         this.blogTitle = blogTitle;
-        this.imageUrl = imageUrl;
-        this.externalLink = externalLink;
         this.createdDate = LocalDate.now();
         this.updatedDate = LocalDate.now();
         this.description = description;
@@ -84,7 +81,7 @@ public class BlogPost {
 
         this.blogTitle = blogTitle;
     }
-
+/*
     public String getImageUrl() {
 
         return imageUrl;
@@ -101,7 +98,7 @@ public class BlogPost {
 
         this.externalLink = externalLink;
     }
-
+*/
     public String getDescription() {
         return description;
     }
