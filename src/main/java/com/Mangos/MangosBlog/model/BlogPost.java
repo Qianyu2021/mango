@@ -34,13 +34,17 @@ public class BlogPost {
     @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    private String imageUrl;
     private String externalLink;
+    private String topImageUrl;
+    private String topImageUUID;
 
     @OneToMany(mappedBy = "blogId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BlogComments> comments = new ArrayList<>();
 
+    @ElementCollection
+    @CollectionTable(name = "blog_post_images", joinColumns = @JoinColumn(name = "blog_post_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls = new ArrayList<>();
 
     public BlogPost(String blogTitle, String description, String content) {
         this.blogTitle = blogTitle;
@@ -48,9 +52,6 @@ public class BlogPost {
         this.updatedDate = LocalDate.now();
         this.description = description;
         this.content = content;
-        this.createdDate = LocalDate.now();
-        this.updatedDate = LocalDate.now();
-
     }
     public Long getBlogId() {
         return blogId;
@@ -81,15 +82,8 @@ public class BlogPost {
 
         this.blogTitle = blogTitle;
     }
-/*
-    public String getImageUrl() {
 
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-
-        this.imageUrl = imageUrl;
-    }
+    /*
     public String getExternalLink() {
 
         return externalLink;
@@ -113,4 +107,20 @@ public class BlogPost {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public void addImageUrl(String imageUrl) {
+        this.imageUrls.add(imageUrl);
+    }
+    public void removeImageUrl(String imageUrl) {
+        this.imageUrls.remove(imageUrl);
+    }
+
 }
