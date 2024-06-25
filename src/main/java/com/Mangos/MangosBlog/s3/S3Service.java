@@ -46,14 +46,8 @@ public class S3Service {
         }
     }
 
-    public void putObject(String blogPost, String image, byte[] bytes) {
-    }
+
 }
-
-
-
-
-
 //
 //
 //    public void putObject(String bucketName, String key, byte[] file) {
@@ -79,5 +73,5 @@ public class S3Service {
 //            throw new RuntimeException(e);
 //        }
 //    }
-
+//
 //}

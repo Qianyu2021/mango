@@ -39,6 +39,8 @@ public class BlogPostService {
 
     public BlogPost createPost(BlogPost blogPost) {
         blogPost.setCreatedDate(LocalDate.now());
+
+
         return postRepository.save(blogPost);
     }
 
@@ -63,27 +65,35 @@ public class BlogPostService {
         postRepository.delete(post);
     }
 
-    public URL uploadPicture(Long id, MultipartFile file) {
-        BlogPost post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
-        String pictureId = UUID.randomUUID().toString();
 
+    public URL uploadPicture(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("File must not be empty");
+        }
+        String fileName = file.getOriginalFilename();
+        String fileId = UUID.randomUUID().toString();
         try {
+            // Upload file to S3
             s3Service.uploadFile(
-                    s3Buckets.getBlogPost(),
-                    "picture/%s/%s".formatted(id, pictureId),
+                    s3Buckets.getBlog(),
+                    "post-images/temp/%s".formatted(fileId),
                     file.getBytes()
             );
+            URL result = s3Service.getimageUrl(
+                    s3Buckets.getBlog(),
+                    "post-images/temp/%s".formatted(fileId));
+            log.info(result.toString());
+
+            return result;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to upload file to S3", e);
         }
-        //store the image to postgres
-        //post.setPictureId(pictureId);
-        postRepository.save(post);
-        return s3Service.getimageUrl(s3Buckets.getBlogPost(), "picture/%s/%s".formatted(id, pictureId));
     }
 
-
 }
+
+
+
 
 
 

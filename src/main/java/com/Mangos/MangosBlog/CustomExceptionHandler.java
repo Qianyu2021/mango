@@ -14,6 +14,5 @@ public class CustomExceptionHandler {
         // Log error and return a custom error message
         return ex.getMessage();
     }
-
     // Additional exception handlers can be added here
 }

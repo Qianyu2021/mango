@@ -108,17 +108,14 @@ public class BlogPost {
         this.content = content;
     }
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    public void setImageUrls(String topImageUrl) {
+        this.topImageUrl = topImageUrl;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
+    public String getImageUrl() {
+        return topImageUrl;
     }
 
-    public void addImageUrl(String imageUrl) {
-        this.imageUrls.add(imageUrl);
-    }
     public void removeImageUrl(String imageUrl) {
         this.imageUrls.remove(imageUrl);
     }
